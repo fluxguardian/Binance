@@ -1,0 +1,103 @@
+﻿<UserControl xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"  
+    x:Class="BinanceP2P.Views.MainView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ViewModels="clr-namespace:BinanceP2P.ViewModels" 
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"  
+    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+    mc:Ignorable="d">
+    <UserControl.DataContext>
+        <ViewModels:MainViewModel/>
+    </UserControl.DataContext>
+    <dxmvvm:Interaction.Behaviors>
+        <dxmvvm:DispatcherService />
+        <dx:DXMessageBoxService/>
+    </dxmvvm:Interaction.Behaviors>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" MinHeight="50"></RowDefinition>
+            <RowDefinition Height="*" MinHeight="500"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <dxe:TextEdit TextWrapping="Wrap"
+                 AcceptsReturn="True"
+                 Text="{Binding JsonOrders}"/>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <dxe:TextEdit TextWrapping="Wrap"
+                 AcceptsReturn="True"
+                 Text="{Binding USDT}"/>
+                <Button Grid.Row="1" Content="CLEAR" Command="{Binding ClearCommand}"/>
+            </Grid>
+        </Grid>
+
+        <dxg:GridControl Grid.Row="1" ItemsSource="{Binding Orders}" 
+                         AllowLiveDataShaping="True" 
+                         EnableSmartColumnsGeneration="True">
+            <dxg:GridControl.View>
+                <dxg:TableView AutoWidth="True" 
+                               AllowEditing="False" 
+                               AllowPerPixelScrolling="True" 
+                               AllowConditionalFormattingMenu="True"
+                               AllowConditionalFormattingManager="True"
+                               AllowDataUpdateFormatConditionMenu="True"
+                               ShowGroupPanel="False" ShowTotalSummary="False" >
+                    <dxg:TableView.FormatConditions>
+                        <dxg:FormatCondition ApplyToRow="True" Expression="[percent] >= 100.3 Or [receive] >= 50000.0" FieldName="amount" PredefinedFormatName="GreenFillWithDarkGreenText"/>
+                    </dxg:TableView.FormatConditions>
+                    <dxg:TableView.RowCellMenuCustomizations>
+                        <dxb:BarButtonItem Content="BUY" 
+                                           Command="{Binding View.DataContext.BuyCommand}"
+                                           CommandParameter="{Binding Row.Row}"
+                                           BarItemDisplayMode="ContentAndGlyph"
+                                           Glyph="{dx:DXImage Image=New_16x16.png}"/>
+                        <dxb:BarButtonItem Content="REMOVE" 
+                                           Command="{Binding View.DataContext.RemoveCommand}"
+                                           CommandParameter="{Binding Row.Row}"
+                                           BarItemDisplayMode="ContentAndGlyph"
+                                           Glyph="{dx:DXImage Image=New_16x16.png}"/>
+                    </dxg:TableView.RowCellMenuCustomizations>
+                </dxg:TableView>
+            </dxg:GridControl.View>
+            <dxg:GridColumn AllowEditing="False" Header="Create Time" FieldName="CreateTime" IsSmart="True">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings  MaskType="DateTime" Mask="T"  MaskUseAsDisplayFormat="True"/>
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn AllowEditing="False" Header="Asset" FieldName="asset" IsSmart="True"/>
+            <dxg:GridColumn AllowEditing="False" Header="Amount" FieldName="Amount" IsSmart="True"/>
+            <dxg:GridColumn AllowEditing="False" Header="Total Price" FieldName="totalPrice" IsSmart="True">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings  MaskType="Numeric" Mask="c" MaskUseAsDisplayFormat="True"/>
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn AllowEditing="False" Header="Countdown" FieldName="countdown" IsSmart="True">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings MaskType="TimeSpan" Mask="c"  MaskUseAsDisplayFormat="True"/>
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn AllowEditing="False" Header="Price" FieldName="Price" IsSmart="True"/>
+            <dxg:GridColumn AllowEditing="False" Header="Total USDT" FieldName="totalUSDT" IsSmart="True"/>
+            <dxg:GridColumn AllowEditing="False" Header="Percent" FieldName="percent" IsSmart="True">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings  MaskType="Numeric" Mask="p" MaskUseAsDisplayFormat="True"/>
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+            <dxg:GridColumn AllowEditing="False" Header="Receive" FieldName="receive" IsSmart="True">
+                <dxg:GridColumn.EditSettings>
+                    <dxe:TextEditSettings  MaskType="Numeric" Mask="c" MaskUseAsDisplayFormat="True"/>
+                </dxg:GridColumn.EditSettings>
+            </dxg:GridColumn>
+        </dxg:GridControl>
+    </Grid>
+</UserControl>
