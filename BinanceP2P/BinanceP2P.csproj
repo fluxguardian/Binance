@@ -98,8 +98,12 @@
     <Compile Include="Models\Data.cs" />
     <Compile Include="Models\DataView.cs" />
     <Compile Include="Models\Field.cs" />
+    <Compile Include="Models\Maker.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\PayMethod.cs" />
+    <Compile Include="Models\Taker.cs" />
+    <Compile Include="Models\TradeMethodCommissionRate.cs" />
+    <Compile Include="Models\UserStatsRet.cs" />
     <Compile Include="Socket\WebSocketServer.cs" />
     <Compile Include="Socket\WebSocketSession.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

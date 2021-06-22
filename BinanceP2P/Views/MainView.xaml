@@ -7,7 +7,8 @@
     xmlns:ViewModels="clr-namespace:BinanceP2P.ViewModels" 
     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"  
     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
-    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
+    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
     mc:Ignorable="d">
     <UserControl.DataContext>
         <ViewModels:MainViewModel/>

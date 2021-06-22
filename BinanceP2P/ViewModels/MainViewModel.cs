@@ -6,8 +6,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
-using System.Windows;
-using System.Windows.Threading;
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
 
@@ -15,7 +13,6 @@ namespace BinanceP2P.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-
         private readonly string token = "1656188113:AAHHb5xfOw39tN9y1w-C6ODSSTPfijpSMRg";
         private readonly string chatId = "1314086379";
         protected IDispatcherService DispatcherService => GetService<IDispatcherService>();
@@ -47,7 +44,7 @@ namespace BinanceP2P.ViewModels
                 }
                 lock (_syncLock)
                 {
-                    foreach (Data item in orders.data.Where(i => i.tradeType == "BUY"))
+                    foreach (Data item in orders.data.Where(i => i.tradeType == "SELL"))
                     {
                         if (!Orders.Any(i => i.orderNumber == item.orderNumber))
                         {
@@ -134,7 +131,7 @@ namespace BinanceP2P.ViewModels
                     {
                         DispatcherService?.BeginInvoke(() =>
                         {
-                            foreach (DataView item in Orders.Where(i => nameof(BTCUSDT).Contains(i.asset)))
+                            foreach (DataView item in Orders.Where(i => nameof(BTCUSDT).StartsWith(i.asset)))
                             {
                                 item.usdt = USDT;
                                 item.Price = BTCUSDT.Price;
@@ -143,7 +140,7 @@ namespace BinanceP2P.ViewModels
                                 item.actual = item.totalUSDT * item.usdt;
                                 item.percent = item.actual / item.totalPrice;
                                 item.receive = item.actual - item.totalPrice;
-                                item.countdown = item.CreateTime.AddMinutes(30) - DateTime.Now;
+                                item.countdown = item.CreateTime.AddMinutes(item.notifyPayedExpireMinute) - DateTime.Now;
                                 item.countdown = item.countdown.TotalMilliseconds < 0 ? TimeSpan.FromSeconds(0) : item.countdown;
                             }
                         });
@@ -156,7 +153,7 @@ namespace BinanceP2P.ViewModels
                     {
                         DispatcherService?.BeginInvoke(() =>
                         {
-                            foreach (DataView item in Orders.Where(i => nameof(ETHUSDT).Contains(i.asset)))
+                            foreach (DataView item in Orders.Where(i => nameof(ETHUSDT).StartsWith(i.asset)))
                             {
                                 item.usdt = USDT;
                                 item.Price = ETHUSDT.Price;
@@ -165,7 +162,7 @@ namespace BinanceP2P.ViewModels
                                 item.actual = item.totalUSDT * item.usdt;
                                 item.percent = item.actual / item.totalPrice;
                                 item.receive = item.actual - item.totalPrice;
-                                item.countdown = item.CreateTime.AddMinutes(30) - DateTime.Now;
+                                item.countdown = item.CreateTime.AddMinutes(item.notifyPayedExpireMinute) - DateTime.Now;
                                 item.countdown = item.countdown.TotalMilliseconds < 0 ? TimeSpan.FromSeconds(0) : item.countdown;
                             }
                         });
@@ -178,16 +175,16 @@ namespace BinanceP2P.ViewModels
                     {
                         DispatcherService?.BeginInvoke(() =>
                         {
-                            foreach (DataView item in Orders.Where(i => nameof(BNBUSDT).Contains(i.asset)))
+                            foreach (DataView item in Orders.Where(i => nameof(BNBUSDT).StartsWith(i.asset)))
                             {
                                 item.usdt = USDT;
                                 item.Price = BNBUSDT.Price;
-                                item.Amount = Math.Truncate(item.amount * 100) / 100M;
+                                item.Amount = Math.Truncate(item.amount * 1000) / 1000M;
                                 item.totalUSDT = Math.Truncate(item.Price * item.Amount * 10000) / 10000M;
                                 item.actual = item.totalUSDT * item.usdt;
                                 item.percent = item.actual / item.totalPrice;
                                 item.receive = item.actual - item.totalPrice;
-                                item.countdown = item.CreateTime.AddMinutes(30) - DateTime.Now;
+                                item.countdown = item.CreateTime.AddMinutes(item.notifyPayedExpireMinute) - DateTime.Now;
                                 item.countdown = item.countdown.TotalMilliseconds < 0 ? TimeSpan.FromSeconds(0) : item.countdown;
                             }
                         });
