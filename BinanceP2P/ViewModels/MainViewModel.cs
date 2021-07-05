@@ -26,7 +26,11 @@ namespace BinanceP2P.ViewModels
             get => GetValue<int>();
             set => SetValue(value);
         }
-
+        public decimal Fee
+        {
+            get => GetValue<decimal>();
+            set => SetValue(value);
+        }
         public string JsonOrders
         {
             get => GetValue<string>();
@@ -88,7 +92,7 @@ namespace BinanceP2P.ViewModels
         [Obsolete]
         public MainViewModel()
         {
-
+            USDT = 23500; Fee = 0.0012M;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             botClient = new TelegramBotClient(token);
             botClient.StartReceiving();
@@ -135,8 +139,8 @@ namespace BinanceP2P.ViewModels
                             {
                                 item.usdt = USDT;
                                 item.Price = BTCUSDT.Price;
-                                item.Amount = Math.Truncate(item.amount * 100000) / 100000M;
-                                item.totalUSDT = Math.Truncate(item.Price * item.Amount * 10000) / 10000M;
+                                item.Amount = Math.Truncate((item.amount - item.amount * Fee) * 100000) / 100000M;
+                                item.totalUSDT = Math.Truncate((item.Price * item.Amount - item.Price * item.Amount * Fee) * 10000) / 10000M;
                                 item.actual = item.totalUSDT * item.usdt;
                                 item.percent = item.actual / item.totalPrice;
                                 item.receive = item.actual - item.totalPrice;
@@ -157,8 +161,8 @@ namespace BinanceP2P.ViewModels
                             {
                                 item.usdt = USDT;
                                 item.Price = ETHUSDT.Price;
-                                item.Amount = Math.Truncate(item.amount * 10000) / 10000M;
-                                item.totalUSDT = Math.Truncate(item.Price * item.Amount * 10000) / 10000M;
+                                item.Amount = Math.Truncate((item.amount - item.amount * Fee) * 10000) / 10000M;
+                                item.totalUSDT = Math.Truncate((item.Price * item.Amount - item.Price * item.Amount * Fee) * 10000) / 10000M;
                                 item.actual = item.totalUSDT * item.usdt;
                                 item.percent = item.actual / item.totalPrice;
                                 item.receive = item.actual - item.totalPrice;
@@ -179,8 +183,8 @@ namespace BinanceP2P.ViewModels
                             {
                                 item.usdt = USDT;
                                 item.Price = BNBUSDT.Price;
-                                item.Amount = Math.Truncate(item.amount * 1000) / 1000M;
-                                item.totalUSDT = Math.Truncate(item.Price * item.Amount * 10000) / 10000M;
+                                item.Amount = Math.Truncate((item.amount - item.amount * Fee) * 1000) / 1000M;
+                                item.totalUSDT = Math.Truncate((item.Price * item.Amount - item.Price * item.Amount * Fee) * 10000) / 10000M;
                                 item.actual = item.totalUSDT * item.usdt;
                                 item.percent = item.actual / item.totalPrice;
                                 item.receive = item.actual - item.totalPrice;

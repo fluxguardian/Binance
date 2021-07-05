@@ -41,7 +41,7 @@ namespace BinanceP2P.Models
         public object notifyPayTime { get; set; }
         public object confirmPayTime { get; set; }
         public object cancelTime { get; set; }
-        public long notifyPayEndTime { get; set; }
+        public object notifyPayEndTime { get; set; }
         public object confirmPayEndTime { get; set; }
         public long allowComplainTime { get; set; }
         public object complainFreezeTime { get; set; }
@@ -75,8 +75,8 @@ namespace BinanceP2P.Models
         public object videoUrl { get; set; }
         public object orderComplaintAmount { get; set; }
         public string classify { get; set; }
-        public int commissionRate { get; set; }
-        public int commission { get; set; }
+        public float commissionRate { get; set; }
+        public float commission { get; set; }
         public List<TradeMethodCommissionRate> tradeMethodCommissionRates { get; set; }
     }
 }
